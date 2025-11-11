@@ -1,7 +1,7 @@
-Explanation of Complete Process and Steps Followed
-1. Understanding the Problem
+Parametric Curve Fitting Assignment – Research and Development / AI
+Overview
 
-The assignment provides a parametric curve with unknown parameters:
+This project estimates unknown parameters in a given parametric curve using optimization techniques. The curve is defined as:
 
 𝑥
 =
@@ -66,16 +66,16 @@ y=42+tsin(θ)+e
 M∣t∣
 ⋅sin(0.3t)cos(θ)
 
-Unknowns:
+Unknown parameters:
 
 𝜃
-θ (angle in degrees),
+θ (angle in degrees)
 
 𝑀
-M (exponential coefficient),
+M (exponential coefficient)
 
 𝑋
-X (x-offset).
+X (x-offset)
 
 Constraints:
 
@@ -105,57 +105,37 @@ Constraints:
 ∘
 ,−0.05<M<0.05,0<X<100
 
-We are given a dataset of points 
-(
-𝑥
-,
-𝑦
-)
-(x,y) for parameter 
-𝑡
-t in range 
-6
-<
-𝑡
-<
-60
-6<t<60.
-
-Goal:
-
-Estimate 
+The goal is to find 
 𝜃
 ,
 𝑀
 ,
 𝑋
-θ,M,X such that the predicted curve fits the given data.
+θ,M,X that best fit a provided dataset of (x, y) points for 6 < t < 60.
 
-Evaluate the L1 distance between predicted and actual points.
+Dataset
 
-2. Data Preparation
+The dataset is provided as a CSV file (xy_data.csv) containing columns:
 
-Load the CSV containing x and y values.
+x – x-coordinate of the point
 
-Ensure a t parameter exists (if not, use the index as a proxy).
+y – y-coordinate of the point
 
-Extract t_data, x_data, and y_data for computations.
+t (optional) – parameter value (if not present, the index is used)
 
-3. Parametric Curve Function
+Methodology
 
-Define a Python function param_curve(params, t) that takes:
+Load Dataset:
 
-params = [theta, M, X]
+Read CSV file and extract x, y, and t.
 
-Converts theta from degrees to radians.
+Parametric Function:
 
-Computes x(t) and y(t) using the given formula.
+Define a Python function that computes (x, y) for any t given parameters [θ, M, X].
 
-This allows easy computation of predicted points for any set of parameters.
+Loss Function:
 
-4. Loss Function
-
-To measure the difference between predicted and actual points, use L1 loss:
+Use L1 distance between predicted and actual points as the optimization metric:
 
 𝐿
 1
@@ -208,85 +188,35 @@ true,i
 
 ∣
 
-L1 distance is chosen because it is robust to outliers and straightforward to compute.
+Optimization:
 
-This is the main metric for fitting the curve.
+Use scipy.optimize.minimize with bounds:
 
-5. Optimization
+θ: 0 – 50°
 
-Use scipy.optimize.minimize to find the best parameters that minimize L1 loss.
+M: -0.05 – 0.05
 
-Set initial guess: [theta=25°, M=0, X=50]
+X: 0 – 100
 
-Define bounds:
+Initial guess: [25, 0, 50]
 
-(
-0
-,
-50
-)
-(0,50) for 
-𝜃
-θ, 
-(
-−
-0.05
-,
-0.05
-)
-(−0.05,0.05) for 
-𝑀
-M, 
-(
-0
-,
-100
-)
-(0,100) for 
-𝑋
-X
+Uniform Sampling for L1 Distance:
 
-Why:
+Sample 1000 points in t uniformly.
 
-Ensures the solution stays within the physically valid range.
+Compute interpolated actual values.
 
-Run the optimizer to obtain:
+Recalculate L1 distance for consistent assessment.
 
-𝜃
-est
-,
-𝑀
-est
-,
-𝑋
-est
-θ
-est
-	​
+Visualization:
 
-,M
-est
-	​
+Plot original data points vs. fitted parametric curve.
 
-,X
-est
-	​
+LaTeX Equation Generation:
 
-6. Uniform Sampling for L1 Distance
+Produce LaTeX-ready parametric curve for submission in Desmos or report.
 
-Original t values might not be uniformly spaced.
-
-Sample 1000 points uniformly in the range [6, 60].
-
-Interpolate original data to these uniform t values.
-
-Compute L1 distance on these points.
-
-This ensures a fair and consistent measure for grading.
-
-7. Results
-
-After optimization and L1 evaluation:
+Results
 
 Estimated Parameters:
 
@@ -295,24 +225,18 @@ M ≈ 0.021397
 X ≈ 54.901150
 
 
-L1 Distance (Uniform Points):
+Final L1 Distance:
 
 ≈ 37865.097670
 
 
-These values fit the given data well and are within the prescribed ranges.
+Observation:
 
-8. Visualization
+Parameters are within the prescribed ranges.
 
-Plot actual points (x_data, y_data) as red dots.
+Predicted curve closely fits the dataset points.
 
-Plot predicted curve using estimated parameters as a blue line.
-
-Check visually that the fitted curve passes close to all data points.
-
-9. LaTeX Submission
-
-Generate a LaTeX-ready parametric equation for submission:
+LaTeX-ready Parametric Equation:
 
 (
 𝑥
@@ -384,37 +308,57 @@ cos
 sin(0.3t)sin(28.120860)+54.901150,42+tsin(28.120860)+e
 0.021397∣t∣
 sin(0.3t)cos(28.120860))
+How to Run
 
-This can be copied directly into Desmos or your report.
+Clone or download the repository.
 
-10. Summary
+Open in Google Colab or Python environment.
 
-Stepwise approach:
+Upload xy_data.csv when prompted.
 
-Load and prepare data
+Run the notebook/script.
 
-Define parametric function
+The script will:
 
-Define L1 loss
+Optimize the parameters [θ, M, X]
 
-Set initial guesses and bounds
+Plot actual vs. fitted curve
 
-Optimize parameters
+Print final L1 distance
 
-Uniformly sample points and compute L1
+Display LaTeX-ready equation for submission
 
-Visualize results
+Libraries Used
 
-Generate LaTeX equation
+numpy – Numerical computations
 
-Assessment Alignment:
+pandas – Data handling
 
-L1 distance → Max score 100
+matplotlib – Visualization
 
-Explanation of methodology → Max score 80
+scipy.optimize – Optimization
 
-Code & plots → Max score 50
+google.colab.files – File upload in Colab
 
-This approach is methodical, reproducible, and within assignment constraints.
-<img width="1692" height="1050" alt="image" src="https://github.com/user-attachments/assets/73099469-e0b1-44ac-9435-223267caf21f" />
+Assessment Alignment
+
+L1 distance (max score 100): Computed to compare predicted and actual points.
+
+Explanation of steps (max score 80): Detailed methodology provided.
+
+Code and repository (max score 50): Full Python code is reproducible and structured.
+
+Notes
+
+The approach ensures parameters stay within constraints.
+
+Uniform sampling guarantees fair L1 evaluation.
+
+The project is fully reproducible in any Python environment or Google Colab.
+<img width="1022" height="260" alt="image" src="https://github.com/user-attachments/assets/26029d53-2704-4266-b400-2abc208828bf" />
+
+<img width="1580" height="1019" alt="image" src="https://github.com/user-attachments/assets/940f9272-a5bf-4972-ad86-96c0558900c1" />
+
+<img width="2266" height="144" alt="image" src="https://github.com/user-attachments/assets/bb58144b-02ad-4cb6-bf08-57b1cb87e207" />
+
 
