@@ -416,3 +416,5 @@ Explanation of methodology → Max score 80
 Code & plots → Max score 50
 
 This approach is methodical, reproducible, and within assignment constraints.
+<img width="1692" height="1050" alt="image" src="https://github.com/user-attachments/assets/73099469-e0b1-44ac-9435-223267caf21f" />
+
